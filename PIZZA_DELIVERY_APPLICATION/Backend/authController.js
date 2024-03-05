@@ -1,5 +1,5 @@
-const User = require('./User');
-const { sendVerificationEmail, sendResetPasswordEmail } = require('./emailService');
+const User = require('./modelSchema').User;
+const { sendVerificationEmail, sendResetPasswordEmail } = require('./modelSchema').EmailService;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
