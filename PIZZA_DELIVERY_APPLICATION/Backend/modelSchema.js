@@ -65,6 +65,19 @@ const orderSchema = new Schema({
     }
 });
 
+// inventoryItems schema
+
+const inventoryItemsSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
+    }
+});
+
 // Exporting the schemas
 
 exports.User = moongose.model('User', userSchema);
@@ -72,3 +85,4 @@ exports.EmailService = moongose.model('EmailService', emailServiceSchema);
 exports.Pizza = moongose.model('Pizza', pizzaSchema);
 exports.Inventory = moongose.model('Inventory', inventorySchema);
 exports.Order = moongose.model('Order', orderSchema);
+exports.InventoryItem = moongose.model('InventoryItem', inventoryItemsSchema); 
