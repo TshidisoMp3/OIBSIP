@@ -26,3 +26,5 @@ cron.schedule('0 8 * * *', async () => {
         console.log(error);
     }
 });
+
+module.exports = inventoryNotific;

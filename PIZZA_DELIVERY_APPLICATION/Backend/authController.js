@@ -28,29 +28,23 @@ exports.register = async (req, res) => {
   //Login a user
 
 exports.login = async (req, res) => {
+    let user;
     try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ 
-            email
+        user = await User.findOne({
+            email: req.body.email, 
         });
+        if (!user) {
+            return res.status(400).json('User not found');
+        }
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if (!validPassword) {
+            return res.status(400).json('Invalid password');
+        }
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token, user });
     }
     catch (error) {
         res.status(500).json(error);
-    }
-    if (!User) {
-        res.status(404).json('User not found');
-    }
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-        res.status(400).json('Wrong password');
-    }
-    const accessToken = jwt.sign({
-        id: User._id,
-        isAdmin: User.isAdmin,
-
-    }, process.env.JWT_SECRET, { expiresIn: '3d' });
-    const { password, ...info } = User._doc;
-    res.status(200).json({ ...info, accessToken });
 }
 
 // verify email
@@ -137,6 +131,8 @@ exports.updateUser = async (req, res) => {
         res.status(500).json(error);
     }
 };
+}
+
 
 // delete user
 
@@ -149,4 +145,3 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json(error);
     }
 };
-
